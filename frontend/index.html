@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <style>
+        .wrap{
+            width:500px;
+            height:300px;
+            margin:20px auto 0;
+        }
+        .inpOne{
+            display:block;
+            width:300px;
+            height:35px;
+            font-size:20px;
+            margin-top:20px;
+        }
+        textarea{
+            display:block;
+            width:300px;
+            height:150px;
+            font-size:18px;
+            margin-top:20px;
+        }
+        .btn{
+            width:80px;
+            height:30px;
+            margin:20px 0 0 200px;
+        }
+        table{
+            margin:50px 0 0 -50px;
+        }
+        tr{
+            height:35px;
+        }
+        td{
+            padding:0 30px;
+            text-align:center;
+        }
+    </style>
+        <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <body>
+        <div class="wrap">
+            <input type="text" class="inpOne">
+            <textarea class="txt"></textarea>
+            <button class="btn">提交</button>
+            <table border="0" cellspacing="0" cellpadding="0"></table>
+        </div>
+        <script>
+            $(function(){
+                $.ajax({
+                    url:'http://localhost:3000/item/new',
+                    type:'GET',
+                    success:function(e){
+                        for(var i in e){
+                            $('table').append('<tr><td>'+e[i].name+'</td><td>'+e[i].title+'</td><td><td><button class="but" data-id='+e[i].id+'>删除</button></td></tr>')
+                        }    
+                        $('.but').click(function(){
+                            var id=$(this).attr('data-id');
+                            var _this=$(this);
+                            $.ajax({
+                                url:'http://localhost:3000/item/delete',
+                                type:'POST',
+                                data:{
+                                    id:id
+                                },
+                                success:function(e){
+                                    _this.parent().parent().remove()
+                                }
+                            })
+                        })       
+                    }
+                })
+            })
+            $(function(){
+                $('.btn').click(function(){
+                    $.ajax({
+                        url:'http://localhost:3000/item/add',
+                        type:'POST',
+                        data:{
+                            'name':$('.inpOne').val(),
+                            'title':$('.txt').val()
+                        },
+                        success:function(e){
+                            $('table').append('<tr><td>'+e[e.length-1].name+'</td><td>'+e[e.length-1].title+'</td><td><td><button class="but" data-id='+e[e.length-1].id+'>删除</button></td></tr>')
+                        }
+                    })
+                })
+            })
+        </script>
+    </body>
+</html>
