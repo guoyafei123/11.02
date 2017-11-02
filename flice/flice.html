@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style>
+            table{
+                width:500px;
+                margin:0 auto;
+            }
+            td{
+                width:200px;
+                height:50px;
+                font-size:25px;
+                color:orange;
+                text-align:center;
+            }
+            tr:nth-child(2n) td{
+                background:grey;
+                color:#fff;
+            }
+        </style>
+    </head>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+    <body>
+    <table border="0" cellspacing="0" cellpadding="0"></table>
+        <script>
+        $(function(){
+            $.ajax({
+                url:'http://localhost:3000/item/new',
+                type:'GET',
+                success:function(e){
+                    for(var i in e){
+                        $('table').append('<tr><td>'+e[i].name+'</td><td>'+e[i].title+'</td><td></tr>')
+                    }       
+                }
+            })
+        })
+        </script>
+    </body>
+</html>
